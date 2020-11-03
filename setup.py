@@ -1,8 +1,5 @@
 from setuptools import setup, find_packages
 
-with open('requirements.txt') as f:
-    requirements = f.readlines()
-
 long_description = 'Sophos Cli. Github is a private repo. Ping me to be added.'
 
 setup(
@@ -27,6 +24,6 @@ setup(
         "Operating System :: OS Independent",
     ),
     keywords='sophos cli automation',
-    install_requires=requirements,
+    install_requires=['requests',],
     zip_safe=False
 )
