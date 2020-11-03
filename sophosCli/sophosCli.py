@@ -13,6 +13,7 @@ import argparse
 import logging
 import shelve
 from pathlib import Path
+from pprint import pprint
 
 client: ApiClient
 identity: Optional[str] = None
@@ -56,8 +57,8 @@ def parse_config(vals):
     levels = ['DEBUG', 'INFO', 'WARNING']
     if vals.get('log_level') is None or vals.get('log_level') not in levels:
         raise ValueError(f'log_level is a required value and must be one of {levels}')
-    eval(f"""logging.basicConfig(level=logging.{vals['log_level']}, 
-             format='%(asctime)s:%(levelname)s:%(message)s')""")
+    logging.basicConfig(level=getattr(logging, vals['log_level']), format='%(asctime)s:%(levelname)s:%(message)s',
+                        force=True)
     if vals.get('identity') is not None and vals.get('identity') != '':
         global identity
         identity = vals['identity']

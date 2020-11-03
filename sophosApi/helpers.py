@@ -23,6 +23,7 @@ def dicter(d: Optional[Dict]) -> Dict:
 
 
 def response_logger(response: requests.Response) -> None:
+    response.request.headers.update({'Authorization': "REDACTED"})
     logging.error(f"""Unable to update agent: {pformat({
         "request": {
             "headers": response.request.headers,
@@ -71,10 +72,13 @@ def backoff_handler(func: requests.request):
                 "response": {
                     "headers": return_result.headers,
                     "url": return_result.url,
-                    "body": return_result.text
+                    "body": return_result.text,
+                    "status_code": return_result.status_code
 
                 }}, depth=3))
             if return_result.status_code == 429 or str(return_result.status_code).startswith('5'):
+                if return_result.status_code > 499:
+                    response_logger(return_result)
                 count = count + 1
                 backoff = randint(0, min(30000, (1000 * (2 ** count))))
                 logging.warning(f"Backing off for {backoff}ms")
