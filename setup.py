@@ -13,9 +13,10 @@ setup(
     long_description_content_type="text/markdown",
     license='',
     packages=find_packages(),
+    py_modules=['sophosCli'],
     entry_points={
         'console_scripts': [
-            'sophosCli = sophosCli.sophosCli:main'
+            'sophosCli = sophosCli:main'
         ]
     },
     classifiers=(
